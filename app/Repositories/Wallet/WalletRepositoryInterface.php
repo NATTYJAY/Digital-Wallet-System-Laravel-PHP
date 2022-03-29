@@ -1,7 +1,7 @@
 <?php 
-namespace App\Repositories\User;
+namespace App\Repositories\Wallet;
 
-interface UserRepositoryInterface
+interface WalletRepositoryInterface
 {
     public function all();
 
@@ -15,7 +15,4 @@ interface UserRepositoryInterface
 
     public function findWhereIn($column,array $data);
 
-    public function getUserByUsername($username);
-
-    public function getUserByEmail($email);
 }

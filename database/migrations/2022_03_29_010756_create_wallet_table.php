@@ -16,12 +16,12 @@ class CreateWalletTable extends Migration
         Schema::create('wallet', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedBigInteger('user_id');
-            $table->integer('balance');
+            $table->index(['user_id']);
+            $table->integer('balance')->default(0);
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
-
     /**
      * Reverse the migrations.
      *

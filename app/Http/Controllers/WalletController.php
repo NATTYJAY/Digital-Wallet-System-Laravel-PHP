@@ -7,4 +7,10 @@ use Illuminate\Http\Request;
 class WalletController extends Controller
 {
     //
+
+
+    public function fundWallet()
+    {
+        
+    }
 }

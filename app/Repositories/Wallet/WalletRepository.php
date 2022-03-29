@@ -1,13 +1,12 @@
 <?php 
 
-namespace App\Repositories\User;
+namespace App\Repositories\Wallet;
+
+use App\Models\Wallet;
+use App\Repositories\Wallet\WalletRepositoryInterface;
 
 
-use App\User;
-use Illuminate\Database\Eloquent\Model;
-
-
-class UserRepository implements UserRepositoryInterface
+class WalletRepository implements WalletRepositoryInterface
 {
     // model property on class instances
     protected $model;
@@ -15,7 +14,7 @@ class UserRepository implements UserRepositoryInterface
     // Constructor to bind model to repo
     public function __construct()
     {
-        $this->model = new User();
+        $this->model = new Wallet();
     }
 
     // Get all instances of model
@@ -27,7 +26,7 @@ class UserRepository implements UserRepositoryInterface
     // Create register also user's wallet here.
     public function create(array $data)
     {
-        return User::create($data);
+        return Wallet::create($data);
     }
 
     // update record in the database
@@ -50,15 +49,10 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->findOrFail($id);
     }
 
-    public function findWhereIn($column,$data){
+    public function findWhereIn($column,$data)
+    {
         return $this->model->whereIn($column,$data);
     }
 
-    public function getUserByUsername($username){
-        return User::where('username', $username)->first();
-    }
-
-    public function getUserByEmail($email){
-        return User::where('email', $email)->first();
-    }
+   
 }

@@ -3,10 +3,19 @@
 namespace App\Exceptions;
 
 use Exception;
+use App\Traits\ResponseTrait;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Contracts\Encryption\DecryptException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Eloquent\MassAssignmentException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
+    use ResponseTrait;
     /**
      * A list of the exception types that are not reported.
      *
@@ -46,6 +55,41 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        return parent::render($request, $exception);
+        if ($exception instanceof MethodNotAllowedHttpException) {
+            return $this->error('The specified method for the request is invalid', $this->code405);
+        }
+
+        if ($exception instanceof NotFoundHttpException) {
+            return $this->error('The specified URL cannot be found', $this->code404);
+        }
+
+        if ($exception instanceof ModelNotFoundException) {
+            return $this->error('The specified model cannot be found', $this->code404);
+        }
+
+        if($exception instanceof AuthenticationException){
+            return $this->error($exception->getMessage(), $this->code401);
+        }
+
+        if($exception instanceof DecryptException){
+            return $this->error($exception->getMessage(), $this->code422);
+        }
+
+        if($exception instanceof MassAssignmentException){
+            return $this->error($exception->getMessage(), $this->code500);
+        }
+        
+        if ($exception instanceof Exception) {
+            $message = $exception->getMessage();
+            $messageArray = json_decode($message, true);
+            // set the pointer to point to the first element
+            reset($messageArray);
+            $first = current($messageArray);
+            // Get first validation error message
+            $error = $first[0];
+
+            return $this->error($error, $this->code404);
+        }
+            return parent::render($request, $exception);
     }
 }
