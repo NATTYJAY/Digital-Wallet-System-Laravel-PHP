@@ -31,9 +31,9 @@ class UserRepository implements UserRepositoryInterface
     // update record in the database
     public function update(array $data, $id)
     {
-        $model = $this->model->find($id);
-        $model->update($data);
-        return $model;
+        $model = User::where('id', '=', $id);
+        $updated =  $model->update($data);
+        return $updated;
     }
 
     // remove record from the database

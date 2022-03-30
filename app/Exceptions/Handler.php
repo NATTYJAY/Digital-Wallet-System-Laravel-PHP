@@ -55,7 +55,8 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $exception)
     {
-        if ($exception instanceof UnauthorizedHttpException) {
+        if ($exception instanceof UnauthorizedHttpException) 
+        {
            
              $preException = $exception->getPrevious();
 
@@ -68,7 +69,8 @@ class Handler extends ExceptionHandler
 
                 return response()->json(['error' => 'Token Invalid'], self::ERROR_CODE);
             }
-            else if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
+            else if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) 
+            {
 
                 return response()->json(['error' => 'Token Blacklisted'], self::ERROR_CODE);
             }
@@ -107,7 +109,6 @@ class Handler extends ExceptionHandler
         {
             return $this->error($exception->getMessage(), $this->code500);
         }
-
         if ($exception instanceof Exception) 
         {
             $message = $exception->getMessage();

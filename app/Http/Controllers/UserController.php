@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Services\User\UserService;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\LogoutRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Http\Requests\User\RegisterRequest;
 
 class UserController extends Controller
@@ -17,7 +17,7 @@ class UserController extends Controller
         $this->userService = $UserService;
     }
     
-     public function register(RegisterRequest $request)
+    public function register(RegisterRequest $request)
     {
         return $this->userService->register($request->all());
     }
@@ -37,9 +37,9 @@ class UserController extends Controller
         return $this->userService->get();
     }
 
-    public function update(Request $request)
+    public function update(UpdateRequest $request, $id)
     {
-        return $this->userService->update($request->all());
+        return $this->userService->update($request->all(), $id);
     }
 
     public function delete()

@@ -11,11 +11,11 @@ class User extends Authenticatable implements JWTSubject
    //For response messages
    const USER_LOGIN_SUCCESSFUL = 'Login Successful';
    const USER_LOGOUT_SUCCESSFUL = 'Logout Successful';
-   const USER_UPDATE_SUCCESSFUL = 'User Update Successful';
+   const USER_UPDATE_SUCCESSFUL = 'User Updated Successful';
    const USER_INVALID_CREDENTIALS = 'Invalid Login Credentials';
-   CONST USER_DELETE_SUCCESSFUL="User Deleted Successfully";
-   CONST USER_FETCH_SUCCESSFUL="User Fetched Successfully";
-   CONST USER_REGISTRATION_SUCCESSFUL = "Registration Successfully";
+   CONST USER_DELETE_SUCCESSFUL="User Deleted Successful";
+   CONST USER_FETCH_SUCCESSFUL="User Fetched Successful";
+   CONST USER_REGISTRATION_SUCCESSFUL = "Registration Successful";
    CONST USER_NOT_FOUND = "User does not exist/not permitted";
    CONST TOKEN_ERROR = "Could not create token";
    CONST USER_LOGOUT_UNSUCCESSFUL = "User cannot be logged out";

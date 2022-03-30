@@ -16,14 +16,14 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('v1')->group(function(){
     Route::prefix('user')->group(function(){
         Route::post('register', "UserController@register");
-        Route::post('login', "UserController@login");
+        Route::post('login', "UserController@login")->name('api.authenticate');;
     });
     Route::middleware('jwt.auth')->group(function () {
         Route::prefix('user')->group(function(){
             Route::get('logout',"UserController@logout");
             // get authenticated user
             Route::get('get',"UserController@get");
-            Route::patch('update','UserController@update');
+            Route::patch('update/{id}','UserController@update');
             Route::delete('delete','UserController@delete');
         });
 

@@ -38,7 +38,7 @@ class UserService
                         'token_type' => 'bearer',
                         'expires_in' => \Config::get('jwt')['ttl'] * 60
                     ];
-                    return $this->success($result,User::USER_LOGIN_SUCCESSFUL,$this->code201);
+                    return $this->success($result,User::USER_LOGIN_SUCCESSFUL,$this->code200);
                 } catch (JWTException $e) {
                     return $this->error(User::TOKEN_ERROR,$this->code500);
                 }
@@ -77,11 +77,14 @@ class UserService
         return $this->success($user,User::USER_FETCH_SUCCESSFUL,$this->code200);
     }
 
-    public function update($request)
+    public function update($request, $id)
     {
         $data = $request;
-        $id = auth()->user()->id;
         $user = $this->userRepository->update($data, $id);
+        
+        if(!$user){
+            return $this->error(User::USER_NOT_FOUND,$this->code401);
+        }
         return $this->success($user,User::USER_UPDATE_SUCCESSFUL,$this->code201);
     }
 
