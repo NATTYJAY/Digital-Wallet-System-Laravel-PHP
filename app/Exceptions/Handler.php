@@ -15,6 +15,7 @@ use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 
 class Handler extends ExceptionHandler
 {
+    CONST ERROR_CODE = 401;
     use ResponseTrait;
     /**
      * A list of the exception types that are not reported.
@@ -60,22 +61,22 @@ class Handler extends ExceptionHandler
 
             if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException)
             {
-                return response()->json(['error' => 'TOKEN_EXPIRED']);
+                return response()->json(['error' => 'Token Expired'], self::ERROR_CODE);
             }
             else if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException)
             {
 
-                return response()->json(['error' => 'TOKEN_INVALID']);
+                return response()->json(['error' => 'Token Invalid'], self::ERROR_CODE);
             }
             else if ($preException instanceof \Tymon\JWTAuth\Exceptions\TokenBlacklistedException) {
 
-                return response()->json(['error' => 'TOKEN_BLACKLISTED']);
+                return response()->json(['error' => 'Token Blacklisted'], self::ERROR_CODE);
             }
         }
 
         if ($exception->getMessage() === 'Token not provided')
         {
-            return response()->json(['error' => 'Token not provided']);
+            return response()->json(['error' => 'Token not provided'], self::ERROR_CODE);
         }
         if ($exception instanceof MethodNotAllowedHttpException) 
         {
