@@ -2,9 +2,7 @@
 
 namespace App\Repositories\User;
 
-
 use App\User;
-use Illuminate\Database\Eloquent\Model;
 
 
 class UserRepository implements UserRepositoryInterface
@@ -50,15 +48,23 @@ class UserRepository implements UserRepositoryInterface
         return $this->model->findOrFail($id);
     }
 
-    public function findWhereIn($column,$data){
+    public function findWhereIn($column,$data)
+    {
         return $this->model->whereIn($column,$data);
     }
 
-    public function getUserByUsername($username){
+    public function getUserById($id)
+    {
+        return User::where('id', $id)->first();
+    }
+
+    public function getUserByUsername($username)
+    {
         return User::where('username', $username)->first();
     }
 
-    public function getUserByEmail($email){
+    public function getUserByEmail($email)
+    {
         return User::where('email', $email)->first();
     }
 }

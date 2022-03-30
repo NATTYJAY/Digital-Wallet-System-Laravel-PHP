@@ -7,7 +7,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
-class WalletRequest extends FormRequest
+class TransferFundRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,8 @@ class WalletRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required'
+            'amount' => 'required',
+            'user_id' => 'required'
         ];
     }
 

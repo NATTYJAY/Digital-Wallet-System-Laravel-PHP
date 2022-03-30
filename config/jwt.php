@@ -1,5 +1,7 @@
 <?php
 
+use Tymon\JWTAuth\Providers\JWT\Namshi;
+
 /*
  * This file is part of jwt-auth.
  *
@@ -275,7 +277,7 @@ return [
         |
         */
 
-        'jwt' => Tymon\JWTAuth\Providers\JWT\Lcobucci::class,
+        'jwt' => Tymon\JWTAuth\Providers\JWT\Namshi::class,
 
         /*
         |--------------------------------------------------------------------------

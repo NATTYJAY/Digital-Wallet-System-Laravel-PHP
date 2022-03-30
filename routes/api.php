@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,12 +15,23 @@ use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')->group(function(){
     Route::prefix('user')->group(function(){
-        Route::post('register', "AuthController@register");
-        Route::post('login', "AuthController@login");
+        Route::post('register', "UserController@register");
+        Route::post('login', "UserController@login");
     });
+    Route::middleware('jwt.auth')->group(function () {
+        Route::prefix('user')->group(function(){
+            Route::get('logout',"UserController@logout");
+            // get authenticated user
+            Route::get('get',"UserController@get");
+            Route::patch('update','UserController@update');
+            Route::delete('delete','UserController@delete');
+        });
 
-    Route::middleware('auth:jwt')->group(function(){
-        Route::post('register', "WalletController@fundWallet");
+        Route::prefix('wallet')->group(function(){
+            Route::post('fundWallet', "WalletController@fundWallet");
+            Route::post('transferFund', "WalletController@transferFund");
+            Route::patch('withdrawFund', "WalletController@withdrawFund");
+        });
     });
 
 });

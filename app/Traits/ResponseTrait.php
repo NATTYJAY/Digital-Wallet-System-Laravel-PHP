@@ -69,7 +69,6 @@ trait ResponseTrait
                 break;
             }
         }
-
         return response()->json([
             'status'=>$this->FailureStatus,
             'message'=>$message,

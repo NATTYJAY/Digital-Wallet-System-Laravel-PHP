@@ -1,9 +1,7 @@
 <?php
 namespace App\Services\User;
 
-use Error;
-
-use App\Models\User;
+use App\User;
 use App\Traits\ResponseTrait;
 use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -15,27 +13,6 @@ use App\Repositories\Wallet\WalletRepository;
 class UserService
 {
     use ResponseTrait;
-
-    //For response messages
-    const USER_LOGIN_SUCCESSFUL = 'Login Successful';
-    const USER_LOGIN_UNSUCCESSFUL = 'Login Unsuccessful';
-    const USER_LOGOUT_SUCCESSFUL = 'Logout Successful';
-    const USER_PASSWORD_RESET_SUCCESSFUL = 'Password Reset Successful';
-    const USER_UPDATE_SUCCESSFUL = 'User Update Successful';
-    const USER_INVALID_CREDENTIALS = 'Invalid Login Credentials';
-    const USER_CANT_CHANGE_STATUS = 'User Can Not Change Status';
-    const USER_CANT_CHANGE_EMAIL = 'User Can Not Change Email';
-    const USER_CANT_VERIFY_PROFILE = 'User Can Not Verify Profile';
-    const USER_CANT_VIEW_PROFILE = 'User Can Not View Profile - Unauthorized';
-    CONST USER_FETCH_SUCCESSFUL="User Fetched Successfully";
-    CONST COUNT_FETCH_SUCCESSFUL = "Count Fetched Successfully";
-    CONST USER_REGISTRATION_SUCCESSFUL = "Registration Successfully";
-    CONST USER_EMAIL_TAKEN = "User email is taken already";
-    CONST USER_USERNAME_TAKEN = "User username is taken already";
-    CONST USER_NOT_FOUND = "User does not exist/not permitted";
-    CONST TOKEN_ERROR = "Could not create token";
-    CONST USER_LOGOUT_UNSUCCESSFUL = "User cannot be logged out";
- 
 
     public function __construct(UserRepository $userRepository, WalletRepository $walletRepository)
     {
@@ -61,15 +38,15 @@ class UserService
                         'token_type' => 'bearer',
                         'expires_in' => \Config::get('jwt')['ttl'] * 60
                     ];
-                    return $this->success($result,self::USER_LOGIN_SUCCESSFUL,$this->code201);
+                    return $this->success($result,User::USER_LOGIN_SUCCESSFUL,$this->code201);
                 } catch (JWTException $e) {
-                    return $this->error(self::TOKEN_ERROR,$this->code500);
+                    return $this->error(User::TOKEN_ERROR,$this->code500);
                 }
             }else{
-                return $this->error(self::USER_INVALID_CREDENTIALS,$this->code401);
+                return $this->error(User::USER_INVALID_CREDENTIALS,$this->code401);
             }
         }else{
-                return $this->error(self::USER_NOT_FOUND,$this->code401);
+                return $this->error(User::USER_NOT_FOUND,$this->code401);
         }
     }
 
@@ -81,48 +58,50 @@ class UserService
             "role" => $request['role'],
             "username" => $request['username']
         ];
-
         $user = null;
-
         DB::transaction(function () use ($requestData,&$user) {
-
             $user = $this->userRepository->create($requestData);
-
             $walletData = [
                 "user_id" => $user->id
             ];
-            $user = $this->walletRepository->create($walletData);
+            $userWallet = $this->walletRepository->create($walletData);
             
-            }, 3);
+        }, 3);
+        return $this->success($user,User::USER_REGISTRATION_SUCCESSFUL,$this->code201);
+    }
 
-            return $this->success($user,self::USER_REGISTRATION_SUCCESSFUL,$this->code201);
+    public function get()
+    {
+        $id = auth()->user()->id;
+        $user = $this->userRepository->show($id);
+        return $this->success($user,User::USER_FETCH_SUCCESSFUL,$this->code200);
+    }
+
+    public function update($request)
+    {
+        $data = $request;
+        $id = auth()->user()->id;
+        $user = $this->userRepository->update($data, $id);
+        return $this->success($user,User::USER_UPDATE_SUCCESSFUL,$this->code201);
     }
 
     public function logout($request)
     {
         try {
-            JWTAuth::invalidate($request->token);
-        
-            return $this->success(null,self::USER_LOGOUT_SUCCESSFUL,$this->code200);
+            JWTAuth::invalidate($request['token']);
+
+            return $this->success(null,User::USER_LOGOUT_SUCCESSFUL,$this->code200);
         } catch (JWTException $exception) {
-            return $this->success(null,self::USER_LOGOUT_UNSUCCESSFUL,$this->code500);
-           
+
+            return $this->error($exception,User::USER_LOGOUT_UNSUCCESSFUL,$this->code500);
         }
-    
     }
 
-    public function getUserByUsername($username)
+    public function delete()
     {
-        return $this->userRepository->getUserByUsername($username);
+        $id = auth()->user()->id;
+        $deletedUser = $this->userRepository->delete($id);
+        return $this->success(null,User::USER_DELETE_SUCCESSFUL,$this->code201);
     }
-
-    public function getUserByEmail($email)
-    {
-        return $this->userRepository->getUserByEmail($email);
-    }
-
-  
-
-
 
 }

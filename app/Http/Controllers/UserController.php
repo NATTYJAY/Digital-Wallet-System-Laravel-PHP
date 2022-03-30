@@ -8,7 +8,7 @@ use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\LogoutRequest;
 use App\Http\Requests\User\RegisterRequest;
 
-class AuthController extends Controller
+class UserController extends Controller
 {
     protected $UserService;
 
@@ -29,17 +29,21 @@ class AuthController extends Controller
 
     public function logout(LogoutRequest $request)
     {
-        return $this->userService->login($request->all());
+        return $this->userService->logout($request->all());
     }
- 
-    // public function getAuthUser(Request $request)
-    // {
-    //     $this->validate($request, [
-    //         'token' => 'required'
-    //     ]);
- 
-    //     $user = JWTAuth::authenticate($request->token);
- 
-    //     return response()->json(['user' => $user]);
-    // }
+
+    public function get()
+    {
+        return $this->userService->get();
+    }
+
+    public function update(Request $request)
+    {
+        return $this->userService->update($request->all());
+    }
+
+    public function delete()
+    {
+        return $this->userService->delete();
+    }
 }

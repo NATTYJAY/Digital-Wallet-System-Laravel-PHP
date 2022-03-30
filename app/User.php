@@ -8,7 +8,18 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class User extends Authenticatable implements JWTSubject
 {
-   
+   //For response messages
+   const USER_LOGIN_SUCCESSFUL = 'Login Successful';
+   const USER_LOGOUT_SUCCESSFUL = 'Logout Successful';
+   const USER_UPDATE_SUCCESSFUL = 'User Update Successful';
+   const USER_INVALID_CREDENTIALS = 'Invalid Login Credentials';
+   CONST USER_DELETE_SUCCESSFUL="User Deleted Successfully";
+   CONST USER_FETCH_SUCCESSFUL="User Fetched Successfully";
+   CONST USER_REGISTRATION_SUCCESSFUL = "Registration Successfully";
+   CONST USER_NOT_FOUND = "User does not exist/not permitted";
+   CONST TOKEN_ERROR = "Could not create token";
+   CONST USER_LOGOUT_UNSUCCESSFUL = "User cannot be logged out";
+
     use Notifiable;
     /**
      * The attributes that are mass assignable.

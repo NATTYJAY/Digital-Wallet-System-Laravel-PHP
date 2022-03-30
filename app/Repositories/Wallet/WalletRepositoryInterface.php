@@ -7,7 +7,7 @@ interface WalletRepositoryInterface
 
     public function create(array $data);
 
-    public function update(array $data, $id);
+    public function updateWallet($newBalance, $userId);
 
     public function delete($id);
 

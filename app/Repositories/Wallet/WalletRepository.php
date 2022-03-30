@@ -30,11 +30,11 @@ class WalletRepository implements WalletRepositoryInterface
     }
 
     // update record in the database
-    public function update(array $data, $id)
+    public function updateWallet($newBalance, $userId)
     {
-        $model = $this->model->find($id);
-        $model->update($data);
-        return $model;
+        $model = Wallet::where('user_id', '=', $userId);
+        $updated =  $model->update(['balance' => $newBalance]);
+        return $updated;
     }
 
     // remove record from the database
@@ -52,6 +52,11 @@ class WalletRepository implements WalletRepositoryInterface
     public function findWhereIn($column,$data)
     {
         return $this->model->whereIn($column,$data);
+    }
+
+    public function getUserWallet($userId)
+    {
+        return Wallet::where("user_id", $userId)->first();
     }
 
    
