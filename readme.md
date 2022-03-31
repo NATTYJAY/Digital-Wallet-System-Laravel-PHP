@@ -10,3 +10,7 @@ A digital wallet also known as an e-wallet refers to software, an electronic dev
 - PhpUnit
 - JWT Authentication (for security)
 - Docker
+
+# Link to API Documentation
+
+https://documenter.getpostman.com/view/14281663/UVyq1d3r
