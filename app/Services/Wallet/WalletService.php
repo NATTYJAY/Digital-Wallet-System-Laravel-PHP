@@ -28,7 +28,8 @@ class WalletService
         ];
         // Check if the user has a wallet already, if not create a default wallet for the user
         $userWallet = $this->walletRepository->getUserWallet($userId);
-        if(!$userWallet){
+        if(!$userWallet)
+        {
             $fundWallet = $this->walletRepository->create($fundWalletData);
         }
             // If the user does have a wallet already, update his/her balance
@@ -50,7 +51,8 @@ class WalletService
 
         $checkUser = $this->userRepository->getUserById($transferRecipientId);
         // check if the requested user has an account
-        if(!$checkUser){
+        if(!$checkUser)
+        {
             return $this->error(Wallet::USER_NOT_FOUND,$this->code401);
         }
         // Check if the user has a wallet set up already
@@ -58,7 +60,8 @@ class WalletService
         if(!$transferRecipientWallet){
             return $this->error(Wallet::WALLET_NOT_FOUND,$this->code401);
         }
-        if($walletAmount > $transferAmount){
+        if($walletAmount > $transferAmount)
+        {
 
             $newCreditedAmount = floatval($transferRecipientWallet['balance']) + $transferAmount;
             $newDebitedAmount = $walletAmount - $transferAmount;
@@ -89,15 +92,18 @@ class WalletService
         $userWallet = $this->walletRepository->getUserWallet($userId);
         $walletAmount = floatval($userWallet['balance']);
        
-        if(!$userWallet){
+        if(!$userWallet)
+        {
             return $this->error(Wallet::WALLET_NOT_FOUND,$this->code401);
         }
          // Check if user has sufficient amount to withdraw
-         if($walletAmount > $withdrawAmount){
+         if($walletAmount > $withdrawAmount)
+         {
              $newBalance = $userWallet['balance'] - $withdrawAmount;
              $fundWallet = $this->walletRepository->updateWallet($newBalance,$userId);
              return $this->success($fundWallet,Wallet::WALLET_UPDATED,$this->code200);
-         }else{
+         }else
+         {
              return $this->error(Wallet::INSUFFICIENT_FUNDS,$this->code401);
          }  
     }

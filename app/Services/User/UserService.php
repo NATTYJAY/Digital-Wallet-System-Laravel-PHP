@@ -24,8 +24,10 @@ class UserService
     {
         $user = $this->userRepository->getUserByEmail($request["email"]);
         $token = null;
-        if(!is_null($user)){
-            if(Auth::attempt(['email'=>$request["email"],'password'=>$request["password"]])){ 
+        if(!is_null($user))
+        {
+            if(Auth::attempt(['email'=>$request["email"],'password'=>$request["password"]]))
+            { 
                 $credentials = [
                     'email' => $request["email"],
                     'password'=>$request["password"]
@@ -42,10 +44,12 @@ class UserService
                 } catch (JWTException $e) {
                     return $this->error(User::TOKEN_ERROR,$this->code500);
                 }
-            }else{
+            }else
+            {
                 return $this->error(User::USER_INVALID_CREDENTIALS,$this->code401);
             }
         }else{
+            
                 return $this->error(User::USER_NOT_FOUND,$this->code401);
         }
     }
