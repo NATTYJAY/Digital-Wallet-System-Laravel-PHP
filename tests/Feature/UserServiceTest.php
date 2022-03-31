@@ -8,7 +8,6 @@ use App\Models\Wallet;
 
 class UserServiceTest extends TestCase
 {
-    
     protected $loginEndPoint = "api/v1/user/login";
     protected $registerEndPoint = "api/v1/user/register";
     protected $retrieveUserEndPoint = "api/v1/user/get";

@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use App\Traits\ResponseTrait;
+use Illuminate\Database\QueryException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -109,6 +110,12 @@ class Handler extends ExceptionHandler
         {
             return $this->error($exception->getMessage(), $this->code500);
         }
+
+        if($exception instanceof QueryException)
+        {
+            return $this->error($exception->getMessage(), $this->code500);
+        }
+        
         if ($exception instanceof Exception) 
         {
             $message = $exception->getMessage();
